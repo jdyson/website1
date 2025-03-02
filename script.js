@@ -4,7 +4,7 @@ const userInput = document.getElementById('userInput');
 // Load Hugging Face model
 async function loadModel() {
   try {
-    const model = await transformers.load('Xenova/all-MiniLM-L6-v2', 'gpt2');
+    const model = await transformers.load('npm i @huggingface/transformers', 'all-MiniLM-L6-v2');
     return model;
   } catch (error) {
     console.error('Error loading model:', error);
