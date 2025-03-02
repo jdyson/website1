@@ -1,75 +1,79 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Hello John Dyson</title>
-    <style>
-      body {
-        background-image: url('https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
-        height: 100vh;
-        margin: 0;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        padding: 20px;
-        flex-direction: column;
-      }
-      h1 {
-        font-family: Arial, sans-serif;
-        font-size: 72px;
-        color: white;
-        text-shadow: 2px 2px 4px #000000;
-        text-align: center;
-        padding: 20px;
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 10px;
-        margin-top: 20px;
-      }
-      #chatbox {
-        width: 80%;
-        max-width: 600px;
-        height: 400px;
-        border: 1px solid #ccc;
-        padding: 10px;
-        background-color: white;
-        overflow-y: scroll;
-      }
-      #userInput {
-        width: 80%;
-        max-width: 600px;
-        padding: 10px;
-        margin-top: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Hello John Dyson</h1>
-    <div id="chatbox"></div>
-    <input type="text" id="userInput" placeholder="Type your message here..." />
-    <script>
-      const chatbox = document.getElementById('chatbox');
-      const userInput = document.getElementById('userInput');
+<head>
+  <title>Hello John Dyson</title>
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 20px;
+      flex-direction: column;
+    }
+    h1 {
+      font-family: Arial, sans-serif;
+      font-size: 72px;
+      color: white;
+      text-shadow: 2px 2px 4px #000000;
+      text-align: center;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    #chatbox {
+      width: 80%;
+      max-width: 600px;
+      height: 400px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: white;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+    }
+    #userInput {
+      width: 80%;
+      max-width: 600px;
+      padding: 10px;
+    }
+  </style>
+  <!-- Include transformers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@latest"></script>
+</head>
+<body>
+  <h1>Hello John Dyson</h1>
+  <div id="chatbox"></div>
+  <input type="text" id="userInput" placeholder="Type your message here..." />
+  <script>
+    const chatbox = document.getElementById('chatbox');
+    const userInput = document.getElementById('userInput');
 
-      const responses = {
-        "hi": "Hello! How can I help you today?",
-        "how are you": "I'm just a bot, but I'm doing great! How can I assist you?",
-        "what is your name": "I am a simple chatbot created to assist you.",
-        "bye": "Goodbye! Have a great day!"
-      };
+    // Load Hugging Face model
+    async function loadModel() {
+      const model = await transformers.load('Xenova/transformers', 'gpt2');
+      return model;
+    }
 
-      userInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-          const message = userInput.value.toLowerCase();
-          userInput.value = '';
-          chatbox.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
-          
-          const reply = responses[message] || "Sorry, I didn't understand that. Can you please rephrase?";
-          chatbox.innerHTML += `<div><strong>Bot:</strong> ${reply}</div>`;
-          chatbox.scrollTop = chatbox.scrollHeight;
-        }
-      });
-    </script>
-  </body>
+    const modelPromise = loadModel();
+
+    userInput.addEventListener('keypress', async function(event) {
+      if (event.key === 'Enter') {
+        const message = userInput.value;
+        userInput.value = '';
+        chatbox.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+
+        const model = await modelPromise;
+        const response = await model.chat(message);
+        chatbox.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }
+    });
+  </script>
+</body>
 </html>
