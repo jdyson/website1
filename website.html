@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello John Dyson</title>
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1470214304380-aadaedcfff10?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); /* Horse in field background */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 20px;
+      flex-direction: column;
+    }
+    h1 {
+      font-family: Arial, sans-serif;
+      font-size: 72px;
+      color: white;
+      text-shadow: 2px 2px 4px #000000;
+      text-align: center;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    #chatbox {
+      width: 80%;
+      max-width: 600px;
+      height: 400px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: white;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+    }
+    #userInput {
+      width: 80%;
+      max-width: 600px;
+      padding: 10px;
+    }
+  </style>
+  <!-- Include transformers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@latest"></script>
+</head>
+<body>
+  <h1>Hello John Dyson</h1>
+  <div id="chatbox"></div>
+  <input type="text" id="userInput" placeholder="Type your message here..." />
+  <script>
+    const chatbox = document.getElementById('chatbox');
+    const userInput = document.getElementById('userInput');
 
+    // Load Hugging Face model
+    async function loadModel() {
+      const model = await transformers.load('Xenova/transformers', 'gpt2');
+      return model;
+    }
+
+    const modelPromise = loadModel();
+
+    userInput.addEventListener('keypress', async function(event) {
+      if (event.key === 'Enter') {
+        const message = userInput.value;
+        userInput.value = '';
+        chatbox.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+
+        const model = await modelPromise;
+        const response = await model.chat(message);
+        chatbox.innerHTML += `<div><strong>Bot:</strong> ${response}</div>`;
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>
