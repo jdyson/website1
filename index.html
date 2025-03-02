@@ -56,7 +56,7 @@
 
     // Load Hugging Face model
     async function loadModel() {
-      const model = await transformers.load('Xenova/transformers', 'deepseek-ai/DeepSeek-R1-Distill-Qwen-32B');
+      const model = await transformers.load('Xenova/transformers', 'https://platform.deepseek.com/');
       return model;
     }
 
