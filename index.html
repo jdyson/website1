@@ -56,11 +56,11 @@
 
     // Load Hugging Face model
     async function loadModel() {
-      const model = await transformers.load('Xenova/transformers', 'gpt2');
+      const model = await transformers.load('Xenova/transformers', 'deepseek-ai/DeepSeek-R1-Distill-Qwen-32B');
       return model;
     }
 
-    const modelPromise = loadModel(gpt2);
+    const modelPromise = loadModel();
 
     userInput.addEventListener('keypress', async function(event) {
       if (event.key === 'Enter') {
