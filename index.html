@@ -4,7 +4,6 @@
   <title>Hello John Dyson</title>
   <style>
     body {
-   //   background-image: url('https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
@@ -44,7 +43,7 @@
     }
   </style>
   <!-- Include transformers.js -->
-  <script src="https://huggingface.co/spaces/black-forest-labs/FLUX.1-dev"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@latest"></script>
 </head>
 <body>
   <h1>Hello John Dyson</h1>
@@ -56,7 +55,7 @@
 
     // Load Hugging Face model
     async function loadModel() {
-      const model = await transformers.load('FLUX.1-dev', 'https://huggingface.co/spaces/black-forest-labs/FLUX.1-dev');
+      const model = await transformers.load('Xenova/transformers', 'gpt2');
       return model;
     }
 
